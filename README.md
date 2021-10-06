@@ -1,0 +1,1 @@
+# react-mongo-aws-S3-image
