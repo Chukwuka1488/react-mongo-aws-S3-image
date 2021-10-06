@@ -1,10 +1,11 @@
-import { render } from '@testing-library/react';
-import React from 'react';
-import './App.css';
+import RenderAvatar from './components/avatar/avatar';
 import RenderCropper from './components/cropper/cropper';
 
+
+
+
 function App() {
-  return <RenderCropper />;
+  return <RenderAvatar />;
 }
 
 export default App;

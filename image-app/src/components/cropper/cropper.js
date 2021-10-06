@@ -1,10 +1,26 @@
 import React from 'react';
+import './cropper.css';
 
-import Button from '@material-ui/core/Button';
 import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
+import Button from '@material-ui/core/Button';
+
+import CancelIcon from '@mui/icons-material/Cancel';
 import { generateDownload } from '../../utils/cropImage';
-export default function RenderCropper() {
+import { IconButton, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+  iconButton: { position: 'absolute', top: '20px', left: '600px' },
+  cancelIcon: {
+    color: 'blue',
+    fontSize: '50px',
+    '&:hover': {
+      color: 'red',
+    },
+  },
+});
+export default function RenderCropper({ handleCropper }) {
+  const classes = useStyles();
   // to trigger the pop-up when trying to select image: use  useRef react hooks
   const InputRef = React.useRef();
 
@@ -38,6 +54,9 @@ export default function RenderCropper() {
 
   return (
     <div className='container'>
+      <IconButton className={classes.iconButton} onClick={handleCropper}>
+        <CancelIcon className={classes.cancelIcon}></CancelIcon>
+      </IconButton>
       <div className='container-cropper'>
         {image ? (
           <>
