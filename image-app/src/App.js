@@ -36,35 +36,40 @@ function App() {
   return (
     <div className='container'>
       <div className='container-cropper'>
-        <Cropper
-          image={image}
-          crop={crop}
-          zoom={zoom}
-          aspect={1}
-          onCropChange={setCrop}
-          onZoomChange={setZoom}
-          onCropComplete={onCropIsComplete}
+        {image ? (
+          <>
+            <Cropper
+              image={image}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropIsComplete}
+            />
+            <Slider />
+          </>
+        ) : null}
+      </div>
+
+      <div className='container-buttons'>
+        <input
+          type='file'
+          accept='image/*'
+          ref={InputRef}
+          style={{ display: 'none' }}
+          onChange={onSelectFile}
         />
-        <Slider />
-        <div className='container-buttons'>
-          <input
-            type='file'
-            accept='image/*'
-            ref={InputRef}
-            style={{ display: 'none' }}
-            onChange={onSelectFile}
-          />
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={triggerFileSelectPopup}
-          >
-            Choose
-          </Button>
-          <Button variant='contained' color='secondary'>
-            Download
-          </Button>
-        </div>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={triggerFileSelectPopup}
+        >
+          Choose
+        </Button>
+        <Button variant='contained' color='secondary'>
+          Download
+        </Button>
       </div>
     </div>
   );
