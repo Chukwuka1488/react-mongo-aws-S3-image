@@ -17,7 +17,10 @@ function App() {
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
-  const onCropIsComplete = () => {};
+  const onCropIsComplete = (croppedAreaPercentage, croppedAreaPixels) => {
+    console.log(croppedAreaPercentage, croppedAreaPixels);
+    setCroppedArea(croppedAreaPixels);
+  };
 
   const onSelectFile = (event) => {
     if (event.target.files && event.target.files.length > 0) {
