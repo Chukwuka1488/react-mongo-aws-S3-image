@@ -19,7 +19,16 @@ function App() {
 
   const onCropIsComplete = () => {};
 
-  const onSelectFile = () => {};
+  const onSelectFile = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.addEventListener('load', () => {
+        console.log(reader.result);
+        setImage(reader.result);
+      });
+    }
+  };
 
   return (
     <div className='container'>
@@ -42,7 +51,11 @@ function App() {
             style={{ display: 'none' }}
             onChange={onSelectFile}
           />
-          <Button variant='contained' color='primary'>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={triggerFileSelectPopup}
+          >
             Choose
           </Button>
           <Button variant='contained' color='secondary'>
