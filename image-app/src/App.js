@@ -38,16 +38,20 @@ function App() {
       <div className='container-cropper'>
         {image ? (
           <>
-            <Cropper
-              image={image}
-              crop={crop}
-              zoom={zoom}
-              aspect={1}
-              onCropChange={setCrop}
-              onZoomChange={setZoom}
-              onCropComplete={onCropIsComplete}
-            />
-            <Slider />
+            <div className='cropper'>
+              <Cropper
+                image={image}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropIsComplete}
+              />
+            </div>
+            <div className='slider'>
+              <Slider min={1} max={3} />
+            </div>
           </>
         ) : null}
       </div>
@@ -64,6 +68,7 @@ function App() {
           variant='contained'
           color='primary'
           onClick={triggerFileSelectPopup}
+          style={{ marginRight: '10px' }}
         >
           Choose
         </Button>
