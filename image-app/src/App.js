@@ -50,7 +50,13 @@ function App() {
               />
             </div>
             <div className='slider'>
-              <Slider min={1} max={3} />
+              <Slider
+                min={1}
+                max={3}
+                step={0.1}
+                value={zoom}
+                onChange={(e, zoom) => setZoom(zoom)}
+              />
             </div>
           </>
         ) : null}
