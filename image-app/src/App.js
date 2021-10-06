@@ -7,8 +7,13 @@ function App() {
     <div className='container'>
       <div className='container-cropper'>
         <div className='container-buttons'>
-          <Button variant='contained' color='primary'>Choose</Button>
-          <Button variant='contained' color='secondary'>Download</Button>
+          <input type='file' accept='image/*' />
+          <Button variant='contained' color='primary'>
+            Choose
+          </Button>
+          <Button variant='contained' color='secondary'>
+            Download
+          </Button>
         </div>
       </div>
     </div>
