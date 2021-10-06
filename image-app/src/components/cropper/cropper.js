@@ -10,7 +10,7 @@ import { generateDownload } from '../../utils/cropImage';
 import { IconButton, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  iconButton: { position: 'absolute', top: '20px', left: '600px' },
+  iconButton: { position: 'absolute', top: '20px', left: '1000px' },
   cancelIcon: {
     color: 'blue',
     fontSize: '50px',
