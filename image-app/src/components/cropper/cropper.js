@@ -4,36 +4,43 @@ import './cropper.css';
 import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
-
 import CancelIcon from '@mui/icons-material/Cancel';
-import { generateDownload } from '../../utils/cropImage';
+
+import getCroppedImg, { generateDownload } from '../../utils/cropImage';
 import { IconButton, makeStyles } from '@material-ui/core';
+import { SnackbarContext } from '../snackbar/snackbar';
+import { dataURLtoFile } from '../../utils/dataURLtoFile';
 
 const useStyles = makeStyles({
-  iconButton: { position: 'absolute', top: '20px', left: '1000px' },
+  iconButton: {
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+  },
   cancelIcon: {
-    color: 'blue',
+    color: '#00a3c8',
     fontSize: '50px',
     '&:hover': {
       color: 'red',
     },
   },
 });
+
 export default function RenderCropper({ handleCropper }) {
   const classes = useStyles();
-  // to trigger the pop-up when trying to select image: use  useRef react hooks
-  const InputRef = React.useRef();
 
-  const triggerFileSelectPopup = () => InputRef.current.click();
+  const inputRef = React.useRef();
 
-  // create state
+  const triggerFileSelectPopup = () => inputRef.current.click();
+
+  const setStateSnackbarContext = React.useContext(SnackbarContext);
+
   const [image, setImage] = React.useState(null);
   const [croppedArea, setCroppedArea] = React.useState(null);
   const [crop, setCrop] = React.useState({ x: 0, y: 0 });
   const [zoom, setZoom] = React.useState(1);
 
-  const onCropIsComplete = (croppedAreaPercentage, croppedAreaPixels) => {
-    console.log(croppedAreaPercentage, croppedAreaPixels);
+  const onCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
     setCroppedArea(croppedAreaPixels);
   };
 
@@ -42,21 +49,56 @@ export default function RenderCropper({ handleCropper }) {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.addEventListener('load', () => {
-        console.log(reader.result);
         setImage(reader.result);
       });
     }
   };
 
   const onDownload = () => {
+    if (!image)
+      return setStateSnackbarContext(
+        true,
+        'Please select an image!',
+        'warning'
+      );
+
     generateDownload(image, croppedArea);
+  };
+
+  const onClear = () => {
+    if (!image)
+      return setStateSnackbarContext(
+        true,
+        'Please select an image!',
+        'warning'
+      );
+
+    setImage(null);
+  };
+
+  const onUpload = async () => {
+    if (!image)
+      return setStateSnackbarContext(
+        true,
+        'Please select an image!',
+        'warning'
+      );
+
+    const canvas = await getCroppedImg(image, croppedArea);
+    const canvasDataUrl = canvas.toDataURL('image/jpeg');
+    const convertedUrlToFile = dataURLtoFile(
+      canvasDataUrl,
+      'cropped-image.jpeg'
+    );
+    console.log(convertedUrlToFile);
   };
 
   return (
     <div className='container'>
       <IconButton className={classes.iconButton} onClick={handleCropper}>
-        <CancelIcon className={classes.cancelIcon}></CancelIcon>
+        <CancelIcon className={classes.cancelIcon} />
       </IconButton>
+
       <div className='container-cropper'>
         {image ? (
           <>
@@ -68,9 +110,10 @@ export default function RenderCropper({ handleCropper }) {
                 aspect={1}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
-                onCropComplete={onCropIsComplete}
+                onCropComplete={onCropComplete}
               />
             </div>
+
             <div className='slider'>
               <Slider
                 min={1}
@@ -78,6 +121,7 @@ export default function RenderCropper({ handleCropper }) {
                 step={0.1}
                 value={zoom}
                 onChange={(e, zoom) => setZoom(zoom)}
+                color='secondary'
               />
             </div>
           </>
@@ -88,12 +132,13 @@ export default function RenderCropper({ handleCropper }) {
         <input
           type='file'
           accept='image/*'
-          ref={InputRef}
-          style={{ display: 'none' }}
+          ref={inputRef}
           onChange={onSelectFile}
+          style={{ display: 'none' }}
         />
+
         <Button
-          onClick={() => setImage(null)}
+          onClick={() => onClear()}
           variant='contained'
           color='primary'
           style={{ marginRight: '10px' }}
@@ -108,16 +153,15 @@ export default function RenderCropper({ handleCropper }) {
         >
           Choose
         </Button>
-
         <Button
           variant='contained'
           color='secondary'
-          style={{ marginRight: '10px' }}
           onClick={onDownload}
+          style={{ marginRight: '10px' }}
         >
           Download
         </Button>
-        <Button variant='contained' color='secondary'>
+        <Button variant='contained' color='secondary' onClick={onUpload}>
           Upload
         </Button>
       </div>

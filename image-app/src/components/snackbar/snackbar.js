@@ -1,22 +1,34 @@
 import * as React from 'react';
 
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
-});
+function Alert(props) {
+  return <MuiAlert elevation={6} variant='filled' {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 export const SnackbarContext = React.createContext();
 
 export default function CustomizedSnackbars({ children }) {
+  const classes = useStyles();
+
   const [stateSnackbar, setStateSnackbar] = React.useState({
     open: false,
     severity: '',
     message: '',
   });
 
-  const setStateSnackbarContext = (open, severity, message) =>
+  const setStateSnackbarContext = (open, message, severity) =>
     setStateSnackbar({ ...stateSnackbar, open, message, severity });
 
   const handleClose = () => setStateSnackbar({ ...stateSnackbar, open: false });
@@ -25,13 +37,14 @@ export default function CustomizedSnackbars({ children }) {
 
   return (
     <SnackbarContext.Provider value={setStateSnackbarContext}>
-      <div spacing={2} sx={{ width: '100%' }}>
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert
-            onClose={handleClose}
-            severity={severity}
-            sx={{ width: '100%' }}
-          >
+      <div className={classes.root}>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity={severity}>
             {message}
           </Alert>
         </Snackbar>

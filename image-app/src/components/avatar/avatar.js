@@ -1,6 +1,5 @@
 import React from 'react';
 import RenderCropper from '../cropper/cropper';
-import Button from '@mui/material/Button';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
@@ -9,7 +8,6 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import IconButton from '@mui/material/IconButton';
-import { ThemeProvider } from '@mui/material/styles';
 import { makeStyles } from '@mui/styles';
 import './avatar.css';
 
