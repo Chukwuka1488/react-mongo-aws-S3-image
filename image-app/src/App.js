@@ -4,6 +4,7 @@ import './App.css';
 import Button from '@material-ui/core/Button';
 import Cropper from 'react-easy-crop';
 import Slider from '@material-ui/core/Slider';
+import { generateDownload } from './utils/cropImage';
 
 function App() {
   // to trigger the pop-up when trying to select image: use  useRef react hooks
@@ -31,6 +32,10 @@ function App() {
         setImage(reader.result);
       });
     }
+  };
+
+  const onDownload = () => {
+    generateDownload(image, croppedArea);
   };
 
   return (
@@ -71,6 +76,14 @@ function App() {
           onChange={onSelectFile}
         />
         <Button
+          onClick={() => setImage()}
+          variant='contained'
+          color='primary'
+          style={{ marginRight: '10px' }}
+        >
+          Clear
+        </Button>
+        <Button
           variant='contained'
           color='primary'
           onClick={triggerFileSelectPopup}
@@ -78,8 +91,17 @@ function App() {
         >
           Choose
         </Button>
-        <Button variant='contained' color='secondary'>
+
+        <Button
+          variant='contained'
+          color='secondary'
+          style={{ marginRight: '10px' }}
+          onClick={onDownload}
+        >
           Download
+        </Button>
+        <Button variant='contained' color='secondary'>
+          Upload
         </Button>
       </div>
     </div>
