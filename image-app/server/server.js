@@ -2,11 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+
 // Importing DotEnv package for Environmental variables.
 const dotenv = require('dotenv');
 const app = express();
 
-const userRouter = require('./routes/userRoutes');
+
 
 // environment variable
 // setting up environment variables from ./config.env file.
@@ -22,8 +23,11 @@ require('./database/db');
 app.use(cors());
 app.use(express.json());
 
-//localhost:9000/api/users/setProfilePic
-app.use('api/users', userRouter);
+
+const userRouter = require('./routes/userRoutes');
+
+// http://localhost:9000/api/users/setProfilePic
+app.use('/api/users', userRouter);
 
 app.get('/', (req, res) =>
   res.json({ success: true, message: 'server is running' })

@@ -1,6 +1,3 @@
-// const express = require('express');
-
-
 
 // Establish Database connection
 const mongoose = require('mongoose');
